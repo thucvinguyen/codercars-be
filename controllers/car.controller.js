@@ -25,7 +25,7 @@ carController.getCars = async (req, res, next) => {
 			.skip((page - 1) * limit)
 			.limit(limit);
 		const total = await Car.countDocuments({ isDeleted: false });
-		return res.status(200).json({ cars, page, total: Math.ceil(total / limit) });
+		return res.status(200).json({ message: 'Get Car List Successfully!', cars, page, total: Math.ceil(total / limit) });
 	} catch (err) {
 		res.status(400).send({ message: err.message });
 	}
