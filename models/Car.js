@@ -32,12 +32,19 @@ const carSchema = new mongoose.Schema(
 			type: Number,
 			required: true,
 		},
+		// Step 1 : Implement soft delete by toggling this boolean
 		isDeleted: { type: Boolean, default: false, required: true },
 	},
 	{
 		timestamps: true,
 	}
 );
+
+// Step 2 : Implement soft delete by using mongoose middleware
+// more on that here https://mongoosejs.com/docs/middleware.html
+// basically, we jump in before any mongoose.find.. methods
+// and remove result that is isDeleted : true 
+// the original data stay the same while the query result is only isDeleted:false exclusively
 
 carSchema.pre(/^find/, function (next) {
 	if (!('_conditions' in this)) return next();
