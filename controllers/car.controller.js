@@ -22,26 +22,68 @@ carController.createCar = async (req, res, next) => {
 };
 
 carController.getCars = async (req, res, next) => {
+  const limit = Number(req.params.limit) || 10;
+  const page = Number(req.params.page) || 1;
+  const skip = (page - 1) * limit;
   try {
-    // YOUR CODE HERE
+    const cars = await Car.find({ isDeleted: false }).skip(skip).limit(limit);
+    const total = 1000;
+
+    sendResponse(
+      res,
+      200,
+      true,
+      { data: { cars, page, total } },
+      null,
+      "List of cars"
+    );
   } catch (err) {
-    // YOUR CODE HERE
+    next(err);
   }
 };
 
 carController.editCar = async (req, res, next) => {
+  const targetId = req.params.id;
+  const updateInfo = req.body;
+  const options = { new: true };
   try {
-    // YOUR CODE HERE
+    const updated = await Car.findByIdAndUpdate(targetId, updateInfo, options);
+    if (!updated) {
+      return next(new Error("Car not found"));
+    }
+    sendResponse(
+      res,
+      200,
+      true,
+      { car: updated },
+      null,
+      "Car updated successfully"
+    );
   } catch (err) {
-    // YOUR CODE HERE
+    next(err);
   }
 };
 
 carController.deleteCar = async (req, res, next) => {
+  const targetId = req.params.id;
+  const options = { new: true };
   try {
-    // YOUR CODE HERE
+    const updatedCar = await Car.findByIdAndUpdate(
+      targetId,
+      { isDeleted: true },
+      options
+    );
+    if (!updatedCar) throw new AppError("Car not found", 404);
+    sendResponse(
+      res,
+      200,
+      true,
+      { car: updatedCar },
+      null,
+      "Car deleted successfully"
+    );
   } catch (err) {
-    // YOUR CODE HERE
+    next(err);
   }
 };
 

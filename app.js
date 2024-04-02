@@ -1,10 +1,11 @@
+require("dotenv").config();
 const { sendResponse, AppError } = require("./helpers/utils.js");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
-require("dotenv").config();
+
 const cors = require("cors");
 var indexRouter = require("./routes/index");
 
@@ -18,8 +19,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 /* DB connection*/
-const mongoURI = process.env.MONGODB_URI;
-
+const mongoURI =
+  "mongodb+srv://thucvi123:LS3fxhMi8EI8MNKL@cluster0.8y5teuw.mongodb.net/test";
+console.log(mongoURI);
 mongoose
   .connect(mongoURI)
   .then(() => console.log(`DB connected ${mongoURI}`))
