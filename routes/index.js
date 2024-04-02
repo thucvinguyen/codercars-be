@@ -6,6 +6,7 @@ const router = express.Router();
 router.get("/", function (req, res, next) {
   console.log("Handling root route request...");
   res.status(200).send("Welcome to Coder Cars!");
+  // throw new AppError(401, "Access denied", "Authentication Error");
 });
 
 router.get("/cars/:test", async (req, res, next) => {

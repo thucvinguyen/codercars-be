@@ -5,9 +5,19 @@ const carController = {};
 
 carController.createCar = async (req, res, next) => {
   try {
-    // YOUR CODE HERE
+    const info = req.body;
+    if (!info) throw new AppError("Invalid input", 402);
+    const created = await Car.create(info);
+    sendResponse(
+      res,
+      200,
+      true,
+      { car: created },
+      null,
+      "Car created successfully"
+    );
   } catch (err) {
-    // YOUR CODE HERE
+    next(err);
   }
 };
 
