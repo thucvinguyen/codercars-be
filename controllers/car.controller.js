@@ -22,21 +22,14 @@ carController.createCar = async (req, res, next) => {
 };
 
 carController.getCars = async (req, res, next) => {
-  const limit = Number(req.params.limit) || 10;
-  const page = Number(req.params.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const page = Number(req.query.page) || 1;
   const skip = (page - 1) * limit;
   try {
     const cars = await Car.find({ isDeleted: false }).skip(skip).limit(limit);
     const total = 1000;
 
-    sendResponse(
-      res,
-      200,
-      true,
-      { data: { cars, page, total } },
-      null,
-      "List of cars"
-    );
+    sendResponse(res, 200, true, { cars, page, total }, null, "List of cars");
   } catch (err) {
     next(err);
   }
